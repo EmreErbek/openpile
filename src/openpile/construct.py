@@ -121,6 +121,13 @@ class Pile:
             self._young_modulus = 210.0e6  # kPa
             # Poisson's ratio
             self._nu = 0.3
+        elif self.material == "Concrete":
+            #unit weight 
+            self._uw = 25.0 #kN/m3
+            #young modulus
+            self._young_modulus = 330.0e6 #kPa
+            # Poisson's ratio
+            self._nu = 0.3
         else:
             raise UserWarning
 
@@ -158,21 +165,33 @@ class Pile:
         area = []
         second_moment_of_area = []
         # add top and bottom of section i (essentially the same values)
-        for _, (d, wt) in enumerate(
-            zip(self.pile_sections["diameter"], self.pile_sections["wall thickness"])
-        ):
-            # calculate area
-            if self.kind == "Circular":
-                A = m.pi / 4 * (d**2 - (d - 2 * wt) ** 2)
-                I = m.pi / 64 * (d**4 - (d - 2 * wt) ** 4)
-                area.append(A)
-                area.append(area[-1])
-                second_moment_of_area.append(I)
-                second_moment_of_area.append(second_moment_of_area[-1])
-            else:
-                # not yet supporting other kind
-                raise ValueError()
-
+        if self.materail =="Steel";
+          for _, (d, wt) in enumerate(
+              zip(self.pile_sections["diameter"], self.pile_sections["wall thickness"])
+          ):
+              # calculate area
+              if self.kind == "Circular":
+                  A = m.pi / 4 * (d**2 - (d - 2 * wt) ** 2)
+                  I = m.pi / 64 * (d**4 - (d - 2 * wt) ** 4)
+                  area.append(A)
+                  area.append(area[-1])
+                  second_moment_of_area.append(I)
+                  second_moment_of_area.append(second_moment_of_area[-1])
+              else:
+                  # not yet supporting other kind
+                  raise ValueError()
+        else:
+              # calculate area
+              if self.kind == "Circular":
+                  A = m.pi / 4 * (d**2)
+                  I = m.pi / 64 * (d**4)
+                  area.append(A)
+                  area.append(area[-1])
+                  second_moment_of_area.append(I)
+                  second_moment_of_area.append(second_moment_of_area[-1])
+              else:
+                  # not yet supporting other kind
+                  raise ValueError()
         # Create pile data
         self.data = pd.DataFrame(
             data={
